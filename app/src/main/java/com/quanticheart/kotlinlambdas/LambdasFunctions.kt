@@ -4,8 +4,9 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import java.lang.Math.random
 
-class MainActivity : AppCompatActivity() {
+class LambdasFunctions : AppCompatActivity() {
 
     /**
      * https://www.raywenderlich.com/2268700-introduction-to-kotlin-lambdas-getting-started
@@ -46,6 +47,34 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        val list = ArrayList<String>()
+        list.each {
+
+        }
+
+        val list2 = ArrayList<Int>()
+        list2.each {
+
+        }
+
+        val numbers = listOf(1, 2, 3, 4, 5)
+        val random = random()
+
+        numbers.each { println(random * it) }
+        //or
+
+        numbers.randomNumbers {
+            println(it)
+        }
+    }
+
+    private inline fun <T> Collection<T>.each(block: (T) -> Unit) {
+        for (e in this) block(e)
+    }
+
+    private inline fun Collection<Int>.randomNumbers(block: (Double) -> Unit) {
+        val random = Math.random()
+        for (e in this) block(random * e)
     }
 
     fun Activity.verifyWindowManager(
@@ -109,7 +138,7 @@ class MainActivity : AppCompatActivity() {
             x + y
         } // 6 val lambda6 = {x: Int , y: Int -> x + y}
 
-        val lambda9: (String) -> Unit = { name: String -> 
+        val lambda9: (String) -> Unit = { name: String ->
             println("Olá, $name ")
         }
 
