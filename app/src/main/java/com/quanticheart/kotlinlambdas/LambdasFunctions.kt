@@ -2,9 +2,12 @@ package com.quanticheart.kotlinlambdas
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.Display
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import java.lang.Math.random
+import java.lang.ref.WeakReference
+import java.util.concurrent.Future
 
 class LambdasFunctions : AppCompatActivity() {
 
@@ -38,10 +41,18 @@ class LambdasFunctions : AppCompatActivity() {
         }
 
         verifyWindowManager({
+           it.display { rotation, displayId ->
 
+           }
         }, {
 
         })
+
+        verifyWindowManagerThis {
+          display { rotation, displayId ->
+
+          }
+        }
 
         verifyWindowManager2 { windowManager, status ->
 
@@ -82,6 +93,16 @@ class LambdasFunctions : AppCompatActivity() {
         deuErro: (() -> Unit)? = null
     ) {
         if (this.windowManager.defaultDisplay.isValid) deuCerto.invoke(this.windowManager) else deuErro?.let { it() }
+    }
+
+    fun Activity.verifyWindowManagerThis(
+        ok: (WindowManager.() -> Unit)? = null
+    ) {
+        if (this.windowManager.defaultDisplay.isValid) ok?.let { this.windowManager.it() }
+    }
+
+    private fun WindowManager.display(param: (rotation: Int, displayId: Int) -> Unit) {
+        param(this.defaultDisplay.rotation, this.defaultDisplay.displayId)
     }
 
     private fun Activity?.verifyWindowManager(
